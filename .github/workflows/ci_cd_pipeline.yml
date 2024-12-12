@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Azure MySQL
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -15,6 +15,9 @@ jobs:
 
       - name: Install MySQL Client
         run: sudo apt-get install mysql-client -y
+
+      - name: Install Python Dependencies
+        run: pip install mysql-connector-python
 
       - name: Initial Schema Deployment
         env:
@@ -44,5 +47,9 @@ jobs:
           mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < sql/seed_data.sql
 
       - name: Concurrent Query Execution
-        run: 
-        python3 scripts/multi_thread_queries.py
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: python3 scripts/multi_thread_queries.py
