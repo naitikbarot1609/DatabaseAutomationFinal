@@ -3,7 +3,7 @@ name: CI/CD Pipeline for Azure MySQL
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -43,7 +43,8 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
-        run: mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < sql/seed_data.sql
+        run: |
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < sql/seed_data.sql
 
       - name: Concurrent Query Execution
         env:
