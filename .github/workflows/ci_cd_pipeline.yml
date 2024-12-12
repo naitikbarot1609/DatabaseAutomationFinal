@@ -44,4 +44,5 @@ jobs:
           mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < sql/seed_data.sql
 
       - name: Concurrent Query Execution
-        run: python3 scripts/multi_thread_queries.py
+        run: 
+        python3 scripts/multi_thread_queries.py
